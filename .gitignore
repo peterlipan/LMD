@@ -14,7 +14,7 @@ checkpoints/
 __MACOSX/
 
 # PyCharm
-#**/.idea
+**/.idea
 
 # dataset
 data/

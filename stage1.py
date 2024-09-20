@@ -101,11 +101,15 @@ def main(gpu, args, wandb_logger):
 if __name__ == '__main__':
     # args
     parser = argparse.ArgumentParser()
-    yaml_config = yaml_config_hook("./config/configs.yaml")
+    # Add argument for config file path
+    parser.add_argument('--config', type=str, default='./config/isic2019.yaml', help='Path to the configuration file')
+    parser.add_argument('--debug', action="store_true", help='debug mode (disable wandb)')
+    args = parser.parse_args()
+
+    yaml_config = yaml_config_hook(args.config)
     for k, v in yaml_config.items():
         parser.add_argument(f"--{k}", default=v, type=type(v))
 
-    parser.add_argument('--debug', action="store_true", help='debug mode(disable wandb)')
     args = parser.parse_args()
 
     args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

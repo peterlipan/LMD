@@ -1,0 +1,52 @@
+# distributed training
+nodes: 1
+gpus: 4
+nr: 0
+dataparallel: 0
+workers: 8
+visible_gpus: "0,1,2,3"
+
+# Paths
+data_path: "/home/r20user17/Documents/kvasir/labeled-images"
+csv_file_train: "./split/hyper-kvasir/training.csv"
+csv_file_val: "./split/hyper-kvasir/validation.csv"
+csv_file_test: "./split/hyper-kvasir/testing.csv"
+checkpoints: "./checkpoints"
+
+# Dataset Options
+dataset: "Hyper-Kvasir"
+imbalance_factor: 500 # only for ISIC2019LT
+
+# Stage1 options
+seed: 42
+batch_size: 128
+image_size: 224
+start_epoch: 0
+epochs: 100
+pretrained: True
+backbone: "resnet18"
+reload: False
+
+# Stage1 options
+lr: 0.01
+ema_decay: 0.999
+batch_loss_weight: 10
+channel_loss_weight: 10
+classification_loss_weight: 1
+probability_loss_weight: 5
+
+# Stage2 options
+stage2_batch_size: 352
+stage2_epochs: 200
+distribution_decay: 0.999
+distribution_loss: 1.0e-4
+classifier_lr: 1.0e-5
+backbone_lr: 1.0e-6
+virtual_size: 50000
+# scheduler
+stage2_gamma: 0.1
+stage2_steps: [50, 100, 150]
+# dataloader
+balanced_e: False
+balanced_m: True
+

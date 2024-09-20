@@ -43,7 +43,7 @@ def e_step(backbone, classifier, opt, loader, label_supervision, feature_supervi
         if feature_supervision is not None:
             # feature supervision
             feature_loss = feature_supervision(activations, y)
-            loss = label_loss + weight * feature_loss
+            loss = label_loss + weight * feature_loss if weight > 0 else label_loss
 
         else:
             loss = label_loss
@@ -246,12 +246,17 @@ def main(args, wandb_logger):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Ours")
-    yaml_config = yaml_config_hook("./config/configs.yaml")
+    # args
+    parser = argparse.ArgumentParser()
+    # Add argument for config file path
+    parser.add_argument('--config', type=str, default='./config/isic2019.yaml', help='Path to the configuration file')
+    parser.add_argument('--debug', action="store_true", help='debug mode (disable wandb)')
+    args = parser.parse_args()
+
+    yaml_config = yaml_config_hook(args.config)
     for k, v in yaml_config.items():
         parser.add_argument(f"--{k}", default=v, type=type(v))
 
-    parser.add_argument('--debug', action="store_true", help='debug mode(disable wandb)')
     args = parser.parse_args()
 
     args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

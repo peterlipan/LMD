@@ -85,4 +85,3 @@ def construct_ISIC2019LT(imbalance_factor, data_root, csv_file_root, random_seed
     train_df.to_csv(os.path.join(csv_file_root, "training.csv"), index=False)
     test_df.to_csv(os.path.join(csv_file_root, "testing.csv"), index=False)
     val_df.to_csv(os.path.join(csv_file_root, "validation.csv"), index=False)
-
