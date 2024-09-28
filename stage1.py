@@ -32,9 +32,9 @@ def main(gpu, args, wandb_logger):
 
     # training set
     transforms = Transforms(size=args.image_size)
-    if 'ISIC' in args.dataset:
+    if 'isic' in args.dataset.lower():
         train_dataset = ISICDataset(args.data_path, args.csv_file_train, transform=transforms)
-    elif 'kvasir' in args.dataset:
+    elif 'kvasir' in args.dataset.lower():
         train_dataset = KvasirDataset(args.data_path, args.csv_file_train, transform=transforms)
 
     # set sampler for parallel training
@@ -54,10 +54,10 @@ def main(gpu, args, wandb_logger):
         sampler=train_sampler,
     )
     if rank == 0:
-        if 'ISIC' in args.dataset:
+        if 'isic' in args.dataset.lower():
             test_dataset = ISICDataset(args.data_path, args.csv_file_test, transform=transforms.test_transform)
             val_dataset = ISICDataset(args.data_path, args.csv_file_val, transform=transforms.test_transform)
-        elif 'kvasir' in args.dataset:
+        elif 'kvasir' in args.dataset.lower():
             test_dataset = KvasirDataset(args.data_path, args.csv_file_test, transform=transforms.test_transform)
             val_dataset = KvasirDataset(args.data_path, args.csv_file_val, transform=transforms.test_transform)
         test_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     # args
     parser = argparse.ArgumentParser()
     # Add argument for config file path
-    parser.add_argument('--config', type=str, default='./config/isic2019.yaml', help='Path to the configuration file')
+    parser.add_argument('--config', type=str, default='./config/kvasir.yaml', help='Path to the configuration file')
     parser.add_argument('--debug', action="store_true", help='debug mode (disable wandb)')
     args, _ = parser.parse_known_args()
 
